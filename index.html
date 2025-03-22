@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasta Fabric Service</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function makePasta() {
+            fetch('/produce')
+                .then(response => response.text())
+                .then(data => document.getElementById('output').innerHTML = data.replace(/\[|\]|,/g, '<br>'))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function restMonsters() {
+            fetch('/rest')
+                .then(response => response.text())
+                .then(data => document.getElementById('output').innerHTML = data.replace(/\[|\]|,/g, '<br>'))
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Pasta Fabric Service</h1>
+    <p>Click the buttons to interact with the Meatball Monsters!</p>
+    
+    <button onclick="makePasta()">Make Pasta</button>
+    <button onclick="restMonsters()">Rest Monsters</button>
+    
+    <div id="output"></div>
+</body>
+</html>

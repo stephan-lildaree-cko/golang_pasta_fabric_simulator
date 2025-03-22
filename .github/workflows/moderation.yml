@@ -1,0 +1,40 @@
+name: Moderate PR
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  pr_comment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Delete PR Comment (this is auxiliary step. Spoiler, you can ignore it)
+        uses: actions/github-script@v7.0.1
+        with:
+          script: |
+            const repo = context.payload.repository.name;
+            const owner = context.payload.repository.owner.login;
+            const comment_id = context.payload.comment.id;
+            if (!comment_id) {
+              console.log("Comment ID is not defined. Skipping deletion.");
+              return;
+            }
+            await github.rest.issues.deleteComment({
+              owner,
+              repo,
+              comment_id,
+            });
+            console.log("Comment flagged as nonsense. Proceeding with removal...");
+    
+      - name: Moderate PR using our SECRET (or not really GH action)
+        uses: the-hooli-corp/stealth-beaver-with-flag@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEVOPS_BOT }}
+        with:
+          delay_seconds: 5
+          comment_body: "${{ github.event.comment.body }}" 
+
