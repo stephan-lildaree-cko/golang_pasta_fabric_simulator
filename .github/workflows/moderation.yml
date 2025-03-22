@@ -31,7 +31,7 @@ jobs:
             console.log("Comment flagged as nonsense. Proceeding with removal...");
     
       - name: Moderate PR using our SECRET (or not really GH action)
-        uses: the-hooli-corp/stealth-beaver-with-flag@main
+        uses: the-hooli-corp/moderate-pr@main
         env:
           GITHUB_TOKEN: ${{ secrets.DEVOPS_BOT }}
         with:
